@@ -1,4 +1,4 @@
-package course.work.controller;
+package course.work.meogol.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ public class CashierController {
     @GetMapping("/index")
     public String index() {
         System.out.println("sindexsss");
-        return "test";
+        return "meogol/test";
     }
 
 }
