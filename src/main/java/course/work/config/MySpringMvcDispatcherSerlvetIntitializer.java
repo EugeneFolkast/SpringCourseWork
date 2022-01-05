@@ -1,4 +1,4 @@
-package meogol.config;
+package course.work.config;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
