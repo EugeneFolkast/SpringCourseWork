@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-Hell fucking lo
+
+<div th:each="dish : ${dishes}">
+    <a th:text="${dish.getId() + ', ' + dish.getName() + ', ' + dish.getPrice()}">order</a>
+</div>
+<br/>
+<hr/>
+
 </body>
 </html>
