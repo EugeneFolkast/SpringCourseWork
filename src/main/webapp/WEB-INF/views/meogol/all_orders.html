@@ -7,7 +7,8 @@
 <body>
 
 <div th:each="dish : ${dishes}">
-    <a th:text="${dish.getId() + ', ' + dish.getName() + ', ' + dish.getPrice()}">order</a>
+    <a th:text="${dish.getId() + ', ' + dish.getName() + ', ' + dish.getDate()
+     + ', ' + dish.getPrice()  + ', ' + dish.getCount()  + ', ' + dish.getSum_price() }">order</a>
 </div>
 <br/>
 <hr/>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:each="order : ${orders}">
+    <a th:text="${order.getId() + ', ' + order.getDate()
+     + ', ' + order.getOrders_sum()  }">order</a>
+</div>
+<br/>
+<hr/>
+
+</body>
+</html>
