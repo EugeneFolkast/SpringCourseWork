@@ -6,12 +6,40 @@
 </head>
 <body>
 
-<div th:each="order : ${orders}">
-    <a th:text="${order.getId() + ', ' + order.getDate()
-     + ', ' + order.getOrders_sum()  }">order</a>
+<div th:object="${order}">
+    Номер заказа: <p th:text="${order.getId()}"></p>
+    Дата заказа : <p th:text="${order.getDate()}"></p>
+    Сумма заказа: <p th:text="${order.getOrders_sum()}"></p>
+
 </div>
-<br/>
 <hr/>
+
+<div th:each="o : ${od}">
+    <p th:text="${'Блюдо: ' + o.getDish().getName() }">order</p>
+    <p th:text="${'Количество: '  + o.getCount()  }">order</p>
+    <p th:text="${'Цена за шт: ' + o.getDish().getPrice()}">order</p>
+
+    <form th:method="DELETE" th:action="@{/delete_od/{id}/{orderId}(id=${o.getId()}, orderId = ${order.getId()})}">
+        <input type="submit" value="Удалить блюдо"/>
+    </form>
+    <br>
+</div>
+
+
+<hr/>
+<form th:method="POST" th:action="@{/update_order/{id}(id=${order.getId()})}" th:object="${newOd}">
+    <select th:field="*{dish}">
+        <option th:each="d: ${dishes}" th:text="${d.getName()}"  th:value="${d}">Value</option>
+    </select>
+
+    <label for="count">Количество</label>
+    <input type="text" th:field="*{count}" id="count"/>
+    <input type="submit" value="Добавить блюдо"/>
+</form>
+
+<form th:method="GET" th:action="@{/home}">
+    <input type="submit" value="Назад"/>
+</form>
 
 </body>
 </html>

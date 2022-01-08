@@ -92,6 +92,7 @@ public class SpringConfig implements WebMvcConfigurer {
         sessionFactory.setPackagesToScan("course.work.meogol.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
+
         return sessionFactory;
     }
 

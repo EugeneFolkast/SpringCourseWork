@@ -2,7 +2,6 @@ package course.work.meogol.model;
 
 import javax.persistence.*;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -49,10 +48,8 @@ public class OrderShow {
         this.id = id;
     }
 
-    public String getDate() {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        return dateFormat.format(date);
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {

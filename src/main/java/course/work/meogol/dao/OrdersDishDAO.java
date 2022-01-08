@@ -1,6 +1,7 @@
 package course.work.meogol.dao;
 
 import course.work.meogol.model.Orders;
+import course.work.meogol.model.OrdersDish;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,39 +9,42 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
 import java.util.List;
 
 @Component
-public class OrdersDAO {
+public class OrdersDishDAO {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public OrdersDAO(SessionFactory sessionFactory) {
+    public OrdersDishDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Transactional(readOnly = true)
-    public List<Orders> showAll() {
+    public List<OrdersDish> showAll() {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery("select d from Orders d", Orders.class)
+        return session.createQuery("select d from OrdersDish d", OrdersDish.class)
+                .getResultList();
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<OrdersDish> showAllOrders(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("select d from OrdersDish d where d.order.id = :id", OrdersDish.class)
+                .setParameter("id", id)
                 .getResultList();
     }
 
     @Transactional
-    public void openOrder(Orders order){
+    public void delete(int id){
         Session session = sessionFactory.getCurrentSession();
 
-        session.save(order);
+        var call = session.createStoredProcedureCall("delete_order_dish");
+        call.registerParameter("input_id", Integer.class, ParameterMode.IN).bindValue(id);
+        call.getOutputs();
     }
-
-    @Transactional
-    public Orders getById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.get(Orders.class, id);
-    }
-
 }

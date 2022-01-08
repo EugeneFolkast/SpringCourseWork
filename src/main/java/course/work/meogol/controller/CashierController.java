@@ -3,22 +3,32 @@ package course.work.meogol.controller;
 import course.work.meogol.dao.DishDAO;
 import course.work.meogol.dao.OrderShowDAO;
 import course.work.meogol.dao.OrdersDAO;
+import course.work.meogol.dao.OrdersDishDAO;
+import course.work.meogol.model.Dish;
+import course.work.meogol.model.Orders;
+import course.work.meogol.model.OrdersDish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class CashierController {
     private final DishDAO dishDAO;
     private final OrderShowDAO orderShowDAO;
     private final OrdersDAO ordersDAO;
+    private final OrdersDishDAO ordersDishDAO;
 
     @Autowired
-    public CashierController(DishDAO dishDAO, OrderShowDAO orderShowDAO, OrdersDAO ordersDAO) {
+    public CashierController(DishDAO dishDAO, OrderShowDAO orderShowDAO, OrdersDAO ordersDAO, OrdersDishDAO ordersDishDAO) {
         this.dishDAO = dishDAO;
         this.orderShowDAO = orderShowDAO;
         this.ordersDAO = ordersDAO;
+        this.ordersDishDAO = ordersDishDAO;
     }
 
     @GetMapping("/all_orders")
@@ -33,9 +43,26 @@ public class CashierController {
         return "meogol/dish";
     }
 
-    @GetMapping("/add_orders")
-    public String orders() {
-        ordersDAO.openOrder();
+    @PostMapping("/add_order")
+    public String add_order(@ModelAttribute("order") Orders order) {
+        Date thisTime = java.sql.Date.valueOf(LocalDate.now());
+        order.setDate(thisTime);
+        order.setOrders_sum((double)0);
+
+        ordersDAO.openOrder(order);
+        return "meogol/order";
+    }
+
+    @GetMapping("/show_order/{id}")
+    public String show_order(@PathVariable("id") int id, Model model) {
+        var order = ordersDAO.getById(id);
+        model.addAttribute("order", order);
+        model.addAttribute("od", ordersDishDAO.showAllOrders(order.getId()));
+        model.addAttribute("dishes", dishDAO.index());
+
+        var newOD = new OrdersDish();
+        newOD.setOrder(order);
+        model.addAttribute("newOd", newOD);
         return "meogol/order";
     }
 
@@ -43,5 +70,11 @@ public class CashierController {
     public String home(Model model) {
         model.addAttribute("orders", ordersDAO.showAll());
         return "meogol/orders";
+    }
+
+    @DeleteMapping("/delete_od/{id}/{orderId}")
+    public String remove_od(@PathVariable("id") int id, @PathVariable("orderId") int orderId) {
+        ordersDishDAO.delete(id);
+        return "redirect:/show_order/"+orderId;
     }
 }

@@ -7,11 +7,16 @@
 <body>
 
 <div th:each="order : ${orders}">
-    <a th:text="${order.getId() + ', ' + order.getDate()
+    <a th:href="@{/show_order/{id}(id=${order.getId()})}"
+            th:text="${order.getId() + ', ' + order.getDate()
      + ', ' + order.getOrders_sum()  }">order</a>
 </div>
 <br/>
 <hr/>
+
+<form th:method="POST" th:action="@{/add_order}">
+<input type="submit" value="Open order"/>
+</form>
 
 </body>
 </html>
