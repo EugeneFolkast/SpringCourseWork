@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PostUpdate;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +51,7 @@ public class CashierController {
         order.setOrders_sum((double)0);
 
         ordersDAO.openOrder(order);
-        return "meogol/order";
+        return "redirect:/show_order/"+order.getId();
     }
 
     @GetMapping("/show_order/{id}")
@@ -79,13 +80,27 @@ public class CashierController {
 
     @PostMapping("/add_order_dish/{orderId}")
     public String add_order_dish(@PathVariable("orderId") int orderId, @ModelAttribute("order_dish") OrdersDish od) {
-        System.out.println("12354213"+od.toString());
         var order = new Orders();
         order.setId(orderId);
-        
+
         od.setOrder(order);
         ordersDishDAO.add(od);
 
         return "redirect:/show_order/"+od.getOrder().getId();
+    }
+
+    @PatchMapping("/update_order_dish/{orderId}/{odId}")
+    public String update_order_dish(@PathVariable("orderId") int orderId,
+                                  @PathVariable("odId") int odId, @ModelAttribute("order_dish") OrdersDish od){
+        var order = new Orders();
+        order.setId(orderId);
+        od.setOrder(order);
+        od.setId(odId);
+        System.out.println("od" + odId);
+        System.out.println("orderId" + orderId);
+
+        ordersDishDAO.update(od);
+
+        return "redirect:/show_order/"+orderId;
     }
 }
