@@ -54,15 +54,14 @@ public class CashierController {
     }
 
     @GetMapping("/show_order/{id}")
-    public String show_order(@PathVariable("id") int id, Model model) {
+    public String show_order(@PathVariable("id") int id, @ModelAttribute("newOd") OrdersDish newOD, Model model) {
         var order = ordersDAO.getById(id);
         model.addAttribute("order", order);
         model.addAttribute("od", ordersDishDAO.showAllOrders(order.getId()));
         model.addAttribute("dishes", dishDAO.index());
 
-        var newOD = new OrdersDish();
         newOD.setOrder(order);
-        model.addAttribute("newOd", newOD);
+
         return "meogol/order";
     }
 
@@ -76,5 +75,17 @@ public class CashierController {
     public String remove_od(@PathVariable("id") int id, @PathVariable("orderId") int orderId) {
         ordersDishDAO.delete(id);
         return "redirect:/show_order/"+orderId;
+    }
+
+    @PostMapping("/add_order_dish/{orderId}")
+    public String add_order_dish(@PathVariable("orderId") int orderId, @ModelAttribute("order_dish") OrdersDish od) {
+        System.out.println("12354213"+od.toString());
+        var order = new Orders();
+        order.setId(orderId);
+        
+        od.setOrder(order);
+        ordersDishDAO.add(od);
+
+        return "redirect:/show_order/"+od.getOrder().getId();
     }
 }

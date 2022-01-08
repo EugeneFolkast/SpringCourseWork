@@ -47,4 +47,15 @@ public class OrdersDishDAO {
         call.registerParameter("input_id", Integer.class, ParameterMode.IN).bindValue(id);
         call.getOutputs();
     }
+
+    @Transactional
+    public void add(OrdersDish od){
+        Session session = sessionFactory.getCurrentSession();
+
+        var call = session.createStoredProcedureCall("add_order_dish");
+        call.registerParameter("input_dish_id", Integer.class, ParameterMode.IN).bindValue(od.getDish().getId());
+        call.registerParameter("input_orders_id", Integer.class, ParameterMode.IN).bindValue(od.getOrder().getId());
+        call.registerParameter("input_count", Integer.class, ParameterMode.IN).bindValue(od.getCount());
+        call.getOutputs();
+    }
 }

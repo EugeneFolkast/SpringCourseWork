@@ -27,14 +27,14 @@
 
 
 <hr/>
-<form th:method="POST" th:action="@{/update_order/{id}(id=${order.getId()})}" th:object="${newOd}">
-    <select th:field="*{dish}">
-        <option th:each="d: ${dishes}" th:text="${d.getName()}"  th:value="${d}">Value</option>
+<form th:method="POST" th:action="@{/add_order_dish/{orderId}(orderId=${order.getId()})}" th:object="${newOd}">
+    <select th:field="${newOd.dish.id}">
+        <option th:each="d: ${dishes}" th:text="${d.getName()}"  th:value="${d.getId()}">Value</option>
     </select>
 
     <label for="count">Количество</label>
     <input type="text" th:field="*{count}" id="count"/>
-    <input type="submit" value="Добавить блюдо"/>
+    <input type="submit" value="Добавить блюдо" />
 </form>
 
 <form th:method="GET" th:action="@{/home}">
