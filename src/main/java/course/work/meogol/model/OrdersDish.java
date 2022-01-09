@@ -49,6 +49,18 @@ public class OrdersDish {
     @Column(name = "count")
     private Integer count=1;
 
+    @Column(name = "status")
+    private String status = "Готовится";
+
+    public OrdersDish(Dish dish, Orders order, Integer count, String status) {
+        this.dish = dish;
+        this.order = order;
+        this.count = count;
+        this.status = status;
+    }
+
+    public OrdersDish(){}
+
     public Integer getId() {
         return id;
     }
@@ -81,6 +93,14 @@ public class OrdersDish {
         this.count = count;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "OrdersDish{" +
@@ -88,6 +108,7 @@ public class OrdersDish {
                 ", dish=" + dish +
                 ", order=" + order +
                 ", count=" + count +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

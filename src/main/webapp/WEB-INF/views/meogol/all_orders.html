@@ -5,13 +5,62 @@
     <title>Title</title>
 </head>
 <body>
-
-<div th:each="dish : ${dishes}">
-    <a th:text="${dish.getId() + ', ' + dish.getName() + ', ' + dish.getDate()
-     + ', ' + dish.getPrice()  + ', ' + dish.getCount()  + ', ' + dish.getSum_price() }">order</a>
-</div>
-<br/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Выход" style="float: right;">
+</form>
 <hr/>
+
+<style type="text/css">
+    table.t1
+    {
+        display: inline;
+    }
+</style>
+
+<table border="1" class="t1"  align="left">
+    <tr>
+        <td>Готовится</td>
+    </tr>
+    <tr>
+        <td>Блюдо</td>
+        <td>Количество</td>
+        <td>Статус</td>
+    </tr>
+    <tr th:each="dish : ${dishes}">
+        <td th:text="${dish.getDish().name}">name</td>
+        <td th:text="${dish.count}">count</td>
+
+        <td>
+            <form th:method="PATCH" th:action="@{/update_order_status/{odId}/{status}(odId=${dish.id}, status = ${dish.status})}">
+                <p th:text="${dish.status}">order</p>
+                <input type="submit" value="Обновить" id="thisStatus"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<table border="1" class="t1" align="right">
+    <tr>
+        <td>Готово</td>
+    </tr>
+    <tr>
+        <td>Блюдо</td>
+        <td>Количество</td>
+        <td>Статус</td>
+    </tr>
+    <tr th:each="cd : ${completeDishes}">
+        <td th:text="${cd.getDish().name}">name</td>
+        <td th:text="${cd.count}">count</td>
+
+        <td>
+            <form th:method="PATCH" th:action="@{/update_order_status/{odId}/{status}(odId=${cd.id}, status = ${cd.status})}">
+                <p th:text="${cd.status}">order</p>
+                <input type="submit" value="Обновить" id="thisStatusComplete"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<br/>
 
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -25,6 +26,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan("course.work")
 @PropertySource("classpath:hibernate.properties")
+@EnableJpaRepositories("course.work")
 @EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
@@ -85,7 +87,7 @@ public class SpringConfig implements WebMvcConfigurer {
         return properties;
     }
 
-    @Bean
+    @Bean(name = "entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
@@ -96,11 +98,14 @@ public class SpringConfig implements WebMvcConfigurer {
         return sessionFactory;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory().getObject());
 
         return transactionManager;
     }
+
+
+
 }

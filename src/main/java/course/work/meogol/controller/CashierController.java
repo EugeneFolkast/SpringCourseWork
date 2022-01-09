@@ -20,22 +20,14 @@ import java.util.List;
 @Controller
 public class CashierController {
     private final DishDAO dishDAO;
-    private final OrderShowDAO orderShowDAO;
     private final OrdersDAO ordersDAO;
     private final OrdersDishDAO ordersDishDAO;
 
     @Autowired
     public CashierController(DishDAO dishDAO, OrderShowDAO orderShowDAO, OrdersDAO ordersDAO, OrdersDishDAO ordersDishDAO) {
         this.dishDAO = dishDAO;
-        this.orderShowDAO = orderShowDAO;
         this.ordersDAO = ordersDAO;
         this.ordersDishDAO = ordersDishDAO;
-    }
-
-    @GetMapping("/all_orders")
-    public String all_orders(Model model) {
-        model.addAttribute("dishes", orderShowDAO.index());
-        return "all_orders";
     }
 
     @GetMapping("/dish")

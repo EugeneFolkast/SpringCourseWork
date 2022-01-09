@@ -4,6 +4,7 @@ import course.work.meogol.model.Orders;
 import course.work.meogol.model.OrdersDish;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +23,11 @@ public class OrdersDishDAO {
     }
 
     @Transactional(readOnly = true)
-    public List<OrdersDish> showAll() {
+    public List<OrdersDish> showAll(String status) {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createQuery("select d from OrdersDish d", OrdersDish.class)
+        return session.createQuery("select d from OrdersDish d where d.status=:status", OrdersDish.class)
+                .setParameter("status", status)
                 .getResultList();
     }
 
@@ -67,5 +69,16 @@ public class OrdersDishDAO {
         call.registerParameter("input_id", Integer.class, ParameterMode.IN).bindValue(od.getId());
         call.registerParameter("input_count", Integer.class, ParameterMode.IN).bindValue(od.getCount());
         call.getOutputs();
+    }
+
+    @Transactional
+    public void updateStatus(int id, String status){
+        Session session = sessionFactory.getCurrentSession();
+
+        var sqlQuery = session.createSQLQuery("UPDATE orders_dish SET status = :status  WHERE id = :idOd");
+        sqlQuery.setParameter("idOd", id);
+        sqlQuery.setParameter("status", status);
+
+        sqlQuery.executeUpdate();
     }
 }

@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Выход" style="float: right;">
+</form>
 
 <div th:each="order : ${orders}">
     <a th:href="@{/show_order/{id}(id=${order.getId()})}"
