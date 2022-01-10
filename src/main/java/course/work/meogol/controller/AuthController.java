@@ -1,13 +1,18 @@
 package course.work.meogol.controller;
 
 import course.work.meogol.model.Person;
+import course.work.security.PersonDetails;
 import course.work.services.RegistrationService;
 import course.work.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @Controller
 public class AuthController {
@@ -42,6 +47,24 @@ public class AuthController {
 
         registrationService.register(person);
 
-        return "redirect:/auth/login";
+        return "redirect:/registration";
+    }
+
+    @GetMapping("/get_home")
+    public String getHome(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+
+        var person = personDetails.getPerson();
+        var role = person.getRole();
+
+        if(Objects.equals(role, "ROLE_KASIR"))
+            return "redirect:/home";
+        if(Objects.equals(role, "ROLE_POVAR"))
+            return "redirect:/cook_orders";
+        if(Objects.equals(role, "ROLE_ADMIN"))
+            return "redirect:/registration";
+        // TODO: 10.01.2022  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! add admin page
+        return "/";
     }
 }

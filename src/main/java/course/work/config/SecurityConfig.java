@@ -29,13 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // конфигурируем сам Spring Security
         // конфигурируем авторизацию
         http.authorizeRequests()
-//                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/login", "/registration", "/error", "/logout").permitAll()
+                .antMatchers("/home", "/dish", "/add_order", "/show_order/{id}",
+                        "/delete_od/{id}/{orderId}", "/add_order_dish/{orderId}",
+                        "/update_order_dish/{orderId}/{odId}").hasRole("KASIR")
+                .antMatchers("/registration").hasRole("ADMIN")
+                .antMatchers("/cook_orders", "/update_order_status/{odId}/{status}").hasRole("POVAR")
+                .antMatchers("/login", "/error", "/logout", "/get_home").permitAll()
                 .anyRequest().hasAnyRole("USER")
                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/get_home", true)
                 .failureUrl("/login?error")
                 .and()
                 .logout()
@@ -54,4 +58,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
