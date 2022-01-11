@@ -8,16 +8,42 @@
 <form th:method="POST" th:action="@{/logout}">
     <input type="submit" value="Выход" style="float: right;">
 </form>
-
-<div th:each="order : ${orders}">
-    <a th:href="@{/show_order/{id}(id=${order.getId()})}"
-            th:text="${order.getId() + ', ' + order.getDate()
-     + ', ' + order.getOrders_sum()  }">order</a>
-</div>
 <br/>
 <hr/>
 
-<form th:method="POST" th:action="@{/add_order}">
+<table border="1">
+    <tr>
+        <td>Номер</td>
+        <td>Дата</td>
+        <td>Сумма</td>
+    </tr>
+    <tr th:each="order : ${orders}">
+        <td>
+            <a th:href="@{/cashier/show_order/{id}(id=${order.getId()})}"
+               th:text="${order.getId()}">order</a>
+        </td>
+        <td>
+            <a th:href="@{/cashier/show_order/{id}(id=${order.getId()})}"
+               th:text="${order.getDate()}">order</a>
+        </td>
+
+        <td>
+            <a th:href="@{/cashier/show_order/{id}(id=${order.getId()})}"
+               th:text="${order.getOrders_sum()}">order</a>
+        </td>
+
+        <td>
+            <form th:method="DELETE" th:action="@{/cashier/delete_order/{id}(id=${order.id})}">
+                <input type="submit" value="Удалить" id="thisStatusComplete"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br/>
+<hr/>
+
+<form th:method="POST" th:action="@{/cashier/add_order}">
 <input type="submit" value="Открыть заказ"/>
 </form>
 

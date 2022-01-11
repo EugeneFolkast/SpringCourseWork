@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table border="1" >
+    <tr>
+        <td>Ингридиент</td>
+        <td>Количество</td>
+    </tr>
+    <tr th:each="recipe : ${recipes}">
+        <td th:text="${recipe.ingredient.name}"> name</td>
+        <td th:text="${recipe.amount}">count</td>
+    </tr>
+</table>
+
+<form th:method="GET" th:action="@{/cook/cook_orders}">
+    <input type="submit" value="Назад"/>
+</form>
+
+</body>
+</html>

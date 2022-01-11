@@ -43,4 +43,10 @@ public class OrdersDAO {
         return session.get(Orders.class, id);
     }
 
+    @Transactional
+    public void deleteOrder(int id){
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(Orders.class, id));
+    }
+
 }

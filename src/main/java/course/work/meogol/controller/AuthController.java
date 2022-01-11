@@ -59,9 +59,9 @@ public class AuthController {
         var role = person.getRole();
 
         if(Objects.equals(role, "ROLE_KASIR"))
-            return "redirect:/home";
+            return "redirect:/cashier/home";
         if(Objects.equals(role, "ROLE_POVAR"))
-            return "redirect:/cook_orders";
+            return "redirect:/cook/cook_orders";
         if(Objects.equals(role, "ROLE_ADMIN"))
             return "redirect:/registration";
         // TODO: 10.01.2022  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! add admin page

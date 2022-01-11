@@ -27,11 +27,11 @@
         <td>Статус</td>
     </tr>
     <tr th:each="dish : ${dishes}">
-        <td th:text="${dish.getDish().name}">name</td>
+        <td><a th:href="@{/cook/show_recipe/{id}(id=${dish.dish.getId()})}" th:text="${dish.dish.name}"> name</a></td>
         <td th:text="${dish.count}">count</td>
 
         <td>
-            <form th:method="PATCH" th:action="@{/update_order_status/{odId}/{status}(odId=${dish.id}, status = ${dish.status})}">
+            <form th:method="PATCH" th:action="@{/cook/update_order_status/{odId}/{status}(odId=${dish.id}, status = ${dish.status})}">
                 <p th:text="${dish.status}">order</p>
                 <input type="submit" value="Обновить" id="thisStatus"/>
             </form>
@@ -53,7 +53,7 @@
         <td th:text="${cd.count}">count</td>
 
         <td>
-            <form th:method="PATCH" th:action="@{/update_order_status/{odId}/{status}(odId=${cd.id}, status = ${cd.status})}">
+            <form th:method="PATCH" th:action="@{/cook/update_order_status/{odId}/{status}(odId=${cd.id}, status = ${cd.status})}">
                 <p th:text="${cd.status}">order</p>
                 <input type="submit" value="Обновить" id="thisStatusComplete"/>
             </form>

@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping("/cashier")
 public class CashierController {
     private final DishDAO dishDAO;
     private final OrdersDAO ordersDAO;
@@ -43,7 +44,7 @@ public class CashierController {
         order.setOrders_sum((double)0);
 
         ordersDAO.openOrder(order);
-        return "redirect:/show_order/"+order.getId();
+        return "redirect:/cashier/show_order/"+order.getId();
     }
 
     @GetMapping("/show_order/{id}")
@@ -67,7 +68,7 @@ public class CashierController {
     @DeleteMapping("/delete_od/{id}/{orderId}")
     public String remove_od(@PathVariable("id") int id, @PathVariable("orderId") int orderId) {
         ordersDishDAO.delete(id);
-        return "redirect:/show_order/"+orderId;
+        return "redirect:/cashier/show_order/"+orderId;
     }
 
     @PostMapping("/add_order_dish/{orderId}")
@@ -78,7 +79,7 @@ public class CashierController {
         od.setOrder(order);
         ordersDishDAO.add(od);
 
-        return "redirect:/show_order/"+od.getOrder().getId();
+        return "redirect:/cashier/show_order/"+od.getOrder().getId();
     }
 
     @PatchMapping("/update_order_dish/{orderId}/{odId}")
@@ -93,6 +94,12 @@ public class CashierController {
 
         ordersDishDAO.update(od);
 
-        return "redirect:/show_order/"+orderId;
+        return "redirect:/cashier/show_order/"+orderId;
+    }
+
+    @DeleteMapping("/delete_order/{id}")
+    public String delete_order(@PathVariable("id") int id){
+        ordersDAO.deleteOrder(id);
+        return "redirect:/cashier/home";
     }
 }
